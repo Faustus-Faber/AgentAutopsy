@@ -34,10 +34,10 @@
 
 ## 🚀 Executive Summary & Core Findings
 
-Prompt-injection benchmarks measure whether instructions hidden in untrusted external data redirect a tool-using language agent, commonly reporting a single metric: the **Attack Success Rate (ASR)**. On modern open-weight compact reasoning models ($\le 14\text{B}$ parameters), reported ASR is frequently below $10\%$. This has fostered the widespread belief that smaller instruction-tuned models possess intrinsic alignment against adversarial injection.
+Prompt-injection benchmarks measure whether instructions hidden in untrusted external data redirect a tool-using language agent, commonly reporting a single metric: the **Attack Success Rate (ASR)**. On modern open-weight compact reasoning models (≤ 14B parameters), reported ASR is frequently below 10%. This has fostered the widespread belief that smaller instruction-tuned models possess intrinsic alignment against adversarial injection.
 
 > **Core Thesis Statement**:  
-> **Low attack success is not security.** An unsuccessful benchmark attack does not imply robust defense: the agent may have passively overlooked the injection while executing the user's task, experienced catastrophic tool syntax collapse, or deferred to default action inertia. When deployment context shifts—even without altering model weights—compliance changes by over $300\times$.
+> **Low attack success is not security.** An unsuccessful benchmark attack does not imply robust defense: the agent may have passively overlooked the injection while executing the user's task, experienced catastrophic tool syntax collapse, or deferred to default action inertia. When deployment context shifts—even without altering model weights—compliance changes by over 300×.
 
 <div align="center">
   <img src="assets/images/fig_4_1_evaluation_workflow.png" alt="End-to-End Diagnostic Pipeline Architecture" width="94%" />
@@ -45,11 +45,11 @@ Prompt-injection benchmarks measure whether instructions hidden in untrusted ext
 </div>
 
 ### 🔑 Key Scientific Discoveries:
-1. 🙈 **Silent Inattention Dominates Defense (§6.3)**: Over $65\%$ of attacks labeled "unsuccessful" involved neither attacker compliance nor defensive refusal. Agents passively ignore injected instructions (`INERT_UNRECOGNIZED`), completing legitimate user tasks in $77.74\%$ of cases.
-2. 🧠 **The Recognition–Enforcement Gap & Perception–Compliance Dissociation (PCD, §6.3.4)**: In $28\%\text{--}47\%$ of trajectories, compact reasoning models explicitly identify, quote, and analyze the prompt injection inside their chain-of-thought scratchpad, yet proceed to comply anyway in over $40\%\text{--}74\%$ of those recognized cases.
-3. ⚙️ **Defense by Tool Syntax Breakdown (§6.3.5)**: Apparent zero-ASR scores can be purely synthetic. `LFM-2.6B` achieves $0.00\%$ baseline ASR on InjecAgent solely because $70\%$ of its calls crash with malformed JSON ($735 / 1{,}054$ invalid tool calls).
-4. 🔓 **The Untriggered Default & 339× Policy Dynamic Range (§6.5.2)**: Appending three sentences of administrative authorization to the system prompt causes ASR to surge by up to $+69.93\,\text{pp}$ (`Spark-4B`: $0.95\% \to 70.88\%$; `Gemma-4B`: $7.02\% \to 72.69\%$; pooled $+34.98\,\text{pp}$). Conversely, administrative interdiction collapses ASR to $0.22\%$.
-5. 🪜 **Continuous Authority Dose-Response (§6.5.3)**: Compliance scales along an unbroken monotonic staircase ($\mathcal{M}_{\text{step}} = 1.00$) across 5 linguistic authority levels ($L_0 \to L_4$), while legitimate task utility collapses.
+1. 🙈 **Silent Inattention Dominates Defense (§6.3)**: Over 65% of attacks labeled "unsuccessful" involved neither attacker compliance nor defensive refusal. Agents passively ignore injected instructions (`INERT_UNRECOGNIZED`), completing legitimate user tasks in 77.74% of cases.
+2. 🧠 **The Recognition–Enforcement Gap & Perception–Compliance Dissociation (PCD, §6.3.4)**: In 28%–47% of trajectories, compact reasoning models explicitly identify, quote, and analyze the prompt injection inside their chain-of-thought scratchpad, yet proceed to comply anyway in over 40%–74% of those recognized cases.
+3. ⚙️ **Defense by Tool Syntax Breakdown (§6.3.5)**: Apparent zero-ASR scores can be purely synthetic. `LFM-2.6B` achieves 0.00% baseline ASR on InjecAgent solely because 70% of its calls crash with malformed JSON (735 / 1,054 invalid tool calls).
+4. 🔓 **The Untriggered Default & 339× Policy Dynamic Range (§6.5.2)**: Appending three sentences of administrative authorization to the system prompt causes ASR to surge by up to +69.93 pp (`Spark-4B`: 0.95% → 70.88%; `Gemma-4B`: 7.02% → 72.69%; pooled +34.98 pp). Conversely, administrative interdiction collapses ASR to 0.22%.
+5. 🪜 **Continuous Authority Dose-Response (§6.5.3)**: Compliance scales along an unbroken monotonic staircase (M_step = 1.00) across 5 linguistic authority levels (L0 → L4), while legitimate task utility collapses.
 6. 🧩 **Reasoning Deliberation Is Orthogonal to Protection (§6.5.5)**: Suppressing Chain-of-Thought deliberation (`thinkOFF` vs `thinkON`) across 28 factorial cells never increased security; instead, disabling reasoning significantly heightened attack success in 8 cells.
 7. 📉 **Quantization Degrades Execution Syntax, Not Attack Resilience (§6.5.6)**: 4-bit NF4 quantization reduces apparent ASR not by enhancing robustness, but by triggering token loops and tool format dropout.
 
@@ -58,8 +58,8 @@ Prompt-injection benchmarks measure whether instructions hidden in untrusted ext
 ## 🔬 Dual-Benchmark Apparatus
 
 We evaluate the full 11-model cohort across two complementary prompt-injection benchmarks:
-* **InjecAgent**: Two-turn ReAct state machine ($N=1{,}054$ nominal test cases: $510$ Direct Harm, $544$ Data Stealing).
-* **AgentDojo**: Stateful, multi-turn environment ($N=949$ paired attack episodes, $N=97$ clean utility controls) spanning 4 real-world application suites (Workspace, Banking, Slack, Travel).
+* **InjecAgent**: Two-turn ReAct state machine (N = 1,054 nominal test cases: 510 Direct Harm, 544 Data Stealing).
+* **AgentDojo**: Stateful, multi-turn environment (N = 949 paired attack episodes, N = 97 clean utility controls) spanning 4 real-world application suites (Workspace, Banking, Slack, Travel).
 
 <div align="center">
   <img src="assets/images/fig_4_2_benchmark_comparison.png" alt="Dual-Benchmark Evaluation Architecture" width="94%" />
@@ -90,9 +90,9 @@ All models were evaluated across three serving precision regimes (**FP16, FP8, a
 | :--- | :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
 | **Gemma-4B** | 4B | Sliding Window Hybrid | 7.02% | 5.12% | 7.78% | 13.49% | 13.91% | 19.49% |
 | **Gemma-12B** | 12B | Sliding Window Hybrid | 3.51% | 3.23% | 1.42% | 27.61% | 24.87% | 8.85% |
-| **LFM-2.6B** | 2.6B | Liquid SSM Hybrid | **0.00%**$^\dagger$ | **0.00%**$^\dagger$ | **0.00%**$^\dagger$ | 2.42% | 2.00% | 2.95% |
+| **LFM-2.6B** | 2.6B | Liquid SSM Hybrid | **0.00%**<sup>†</sup> | **0.00%**<sup>†</sup> | **0.00%**<sup>†</sup> | 2.42% | 2.00% | 2.95% |
 | **MiniCPM-2B** | 2B | Standard Dense | 0.85% | 0.95% | 0.00% | 5.90% | 5.80% | 2.32% |
-| **Ministral-14B** | 14B | Dense Reasoning | 0.28%$^\dagger$ | 5.69% | 4.55% | 22.55% | 13.28% | 16.23% |
+| **Ministral-14B** | 14B | Dense Reasoning | 0.28%<sup>†</sup> | 5.69% | 4.55% | 22.55% | 13.28% | 16.23% |
 | **Nanbeige-3B** | 3B | Looped Transformer (22×2) | 2.47% | 2.75% | 1.04% | 4.64% | 5.37% | 4.32% |
 | **Nemotron-Nano-4B** | 4B | Mamba2-Transformer Hybrid | 2.56% | 2.75% | 4.84% | 15.81% | 16.54% | 15.49% |
 | **Ornith-9B** | 9B | Standard Dense | 27.42% | 20.30% | 13.47% | **1.90%** | **1.16%** | **1.58%** |
@@ -102,7 +102,7 @@ All models were evaluated across three serving precision regimes (**FP16, FP8, a
 | **All Models Pooled** | -- | -- | **8.09%** | **7.50%** | **6.35%** | **11.96%** | **11.11%** | **9.63%** |
 | **Median Model** | -- | -- | **2.56%** | **3.23%** | **4.55%** | **9.69%** | **10.90%** | **8.85%** |
 
-*Legend: $^\dagger$ indicates attack failures driven by high tool invalidity/syntax crashes.*
+*Legend: <sup>†</sup> indicates attack failures driven by high tool invalidity/syntax crashes.*
 
 <div align="center">
   <img src="assets/images/fig_vulnerability_asymmetry.png" alt="Vulnerability Asymmetry" width="90%" />
@@ -160,13 +160,13 @@ We manipulate deployment scaffolding—system prompts, authority hierarchy, test
 
 ### 📑 Selected Deployment Intervention Results (Thesis Table 6.10)
 
-| Experimental Dimension | Condition / Intervention | Targeted ASR (%) | Utility Under Attack (UA) | Safe & Useful ($S0U1$) |
+| Experimental Dimension | Condition / Intervention | Targeted ASR (%) | Utility Under Attack (UA) | Safe & Useful (S0U1) |
 | :--- | :--- | :---: | :---: | :---: |
 | **Instruction Boundary Guardrails** | Baseline InjecAgent<br>Guardrail Intervention | 9.69%<br>**0.95%** | --<br>-- | --<br>-- |
 | **Administrative Policy Framing** | Baseline InjecAgent<br>Interdict Policy<br>Authorize Policy | 8.09%<br>**0.22%**<br>**43.07%** | --<br>--<br>-- | --<br>--<br>-- |
-| **Linguistic Authority Ladder** | Level $L_0$ (Baseline)<br>Level $L_1$ (Suggestive)<br>Level $L_2$ (Directive)<br>Level $L_3$ (Rationalized) | 13.49%<br>23.50%<br>38.67%<br>**42.04%** | 68.18%<br>63.86%<br>50.16%<br>**45.31%** | 63.75%<br>56.06%<br>37.41%<br>**30.03%** |
+| **Linguistic Authority Ladder** | Level L0 (Baseline)<br>Level L1 (Suggestive)<br>Level L2 (Directive)<br>Level L3 (Rationalized) | 13.49%<br>23.50%<br>38.67%<br>**42.04%** | 68.18%<br>63.86%<br>50.16%<br>**45.31%** | 63.75%<br>56.06%<br>37.41%<br>**30.03%** |
 | **Serving Numerical Precision** | FP16 Pooled<br>FP8 Pooled<br>NF4 Pooled | 11.96%<br>11.11%<br>**9.63%** | 72.73%<br>72.10%<br>**67.98%** | 68.77%<br>68.29%<br>**64.80%** |
-| **Reasoning-Token Budget** | Nanbeige-3B 2,000 tokens<br>Nanbeige-3B 256 tokens | 1.23%<br>**0.00%** | --<br>-- | --<br>-- ($96.1\%$ syntax invalids) |
+| **Reasoning-Token Budget** | Nanbeige-3B 2,000 tokens<br>Nanbeige-3B 256 tokens | 1.23%<br>**0.00%** | --<br>-- | --<br>-- (96.1% syntax invalids) |
 
 <div align="center">
   <img src="assets/images/fig_precision_sensitivity.png" alt="Precision Sensitivity" width="70%" />
@@ -177,21 +177,21 @@ We manipulate deployment scaffolding—system prompts, authority hierarchy, test
 
 ## 🏆 Master Model Evaluation Scorecard (Thesis Table 6.11)
 
-Models ranked by Safe and Useful execution ($S0U1$):
+Models ranked by Safe and Useful execution (S0U1):
 
-| Model Architecture | InjecAgent ASR | AgentDojo ASR | Refusal % (AD / IA) | Invalid Calls (IA) | ATOM $S0U1$ (%) | ATOM $S0U0$ (%) | Authorize Surge ($\Delta\text{pp}$) | Security & Behavioral Profile |
+| Model Architecture | InjecAgent ASR | AgentDojo ASR | Refusal % (AD / IA) | Invalid Calls (IA) | ATOM S0U1 (%) | ATOM S0U0 (%) | Authorize Surge (Δpp) | Security & Behavioral Profile |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
-| **Ornith-9B** | 27.42% | **1.90%** | **83.6 / 71.9** | 19 | **87.6%** | 11.0% | +34.95pp | Strong genuine refusal; highest $S0U1$. |
-| **Nanbeige-3B** | 2.47% | 4.64% | 7.6 / 38.1 | 270 | **80.1%** | 15.1% | +23.24pp | High $S0U1$, susceptible to micro-clamping. |
+| **Ornith-9B** | 27.42% | **1.90%** | **83.6 / 71.9** | 19 | **87.6%** | 11.0% | +34.95pp | Strong genuine refusal; highest S0U1. |
+| **Nanbeige-3B** | 2.47% | 4.64% | 7.6 / 38.1 | 270 | **80.1%** | 15.1% | +23.24pp | High S0U1, susceptible to micro-clamping. |
 | **Qwen-9B** | 25.14% | 9.69% | 2.0 / 13.7 | 44 | **78.3%** | 10.1% | +49.43pp | High utility, highly compliant under authority. |
 | **Spark-4B** | 0.95% | 2.32% | 47.6 / 24.8 | 6 | **75.7%** | 22.5% | +69.93pp | Largest authority surge (+69.9pp). |
 | **MiniCPM-2B** | 0.85% | 5.90% | 4.5 / 2.9 | 42 | **71.3%** | 24.1% | +2.09pp | Low ASR driven by silent continuation. |
-| **LFM-2.6B** | **0.00%**$^\dagger$ | 2.42% | 17.3 / 5.1 | 735 | **64.1%** | 33.5% | +0.00pp$^\dagger$ | Zero ASR caused by syntax breakdown. |
+| **LFM-2.6B** | **0.00%**<sup>†</sup> | 2.42% | 17.3 / 5.1 | 735 | **64.1%** | 33.5% | +0.00pp<sup>†</sup> | Zero ASR caused by syntax breakdown. |
 | **Gemma-4B** | 7.02% | 13.49% | 11.1 / 8.4 | **1** | **60.1%** | 24.2% | +65.67pp | High execution validity, authority-sensitive. |
 | **Qwen-4B** | 18.79% | 25.18% | 4.4 / 6.8 | 19 | **59.8%** | 16.1% | +43.31pp | Consistently vulnerable across both benchmarks. |
 | **Gemma-12B** | 3.51% | 27.61% | 3.5 / 20.0 | **1** | **56.7%** | 23.3% | +57.92pp | Highest AgentDojo attack vulnerability. |
 | **Nemotron-Nano-4B**| 2.56% | 15.81% | 1.1 / 0.5 | 162 | **54.7%** | 28.5% | +45.13pp | Silent execution, almost never refuses. |
-| **Ministral-14B** | 0.28%$^\dagger$| 22.55% | 0.8 / 4.4 | 263 | **50.1%** | 30.4% | -0.17pp$^\dagger$ | Low InjecAgent ASR via invalid calls. |
+| **Ministral-14B** | 0.28%<sup>†</sup>| 22.55% | 0.8 / 4.4 | 263 | **50.1%** | 30.4% | -0.17pp<sup>†</sup> | Low InjecAgent ASR via invalid calls. |
 
 ---
 
