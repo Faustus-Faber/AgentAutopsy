@@ -12,7 +12,7 @@ A pervasive hypothesis in reasoning-model alignment posits that test-time Chain-
 
 ## 2. Model Selection Rationale & CoT Taxonomy
 
-EXP 5A evaluates across all 8 native reasoning architectures in the thesis cohort, with the 3 non-reasoning architectures serving as unmanipulated empirical controls:
+EXP 5A evaluates across 8 native reasoning architectures in the thesis cohort that support programmatic CoT suppression in vLLM, with 3 models serving as unmanipulated empirical reference baselines (Thesis Section 4.4.5):
 
 | Model ID | Formal Model Name | Parameter Scale | Architectural Paradigm | CoT Implementation | Reasoning Ablation Status |
 | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -24,12 +24,12 @@ EXP 5A evaluates across all 8 native reasoning architectures in the thesis cohor
 | **`qwen`** | `Qwen3.5-4B` | 4B | Gated DeltaNet Hybrid | `<think> ... </think>` | Evaluated ($2 \times 4$ Factorial) |
 | **`nano`** | `Nemotron-3-Nano-4B` | 4B | Mamba2-Transformer Hybrid | `<think> ... </think>` | Evaluated ($2 \times 4$ Factorial) |
 | **`nanbeige`** | `Nanbeige-4.2-3B` | 3B | Looped Transformer (22×2) | Native CoT | Evaluated (Control On vs Off Full Cohort) |
-| *`minicpm5`*| `MiniCPM5-2B` | 2B | Standard Dense | Non-Reasoning | CoT N/A (Direct generation baseline) |
-| *`spark`* | `Spark-X2.5-4B` | 4B | Standard Dense | Non-Reasoning | CoT N/A (Direct generation baseline) |
-| *`lfm`* | `LFM-2.5-2.6B` | 2.6B | Liquid SSM Hybrid | Non-Reasoning | CoT N/A (Direct generation baseline) |
+| *`minicpm5`*| `MiniCPM5-2B` | 2B | Standard Dense | Native (`<think>`) | Baseline Only (vLLM Template Suppression Incompatible) |
+| *`spark`* | `Spark-X2.5-4B` | 4B | Hybrid SWA (3:1) | Native (`<think>`) | Baseline Only (vLLM Template Suppression Incompatible) |
+| *`lfm`* | `LFM-2.5-2.6B` | 2.6B | Liquid SSM Hybrid | Native (`<think>`) | Baseline Only (vLLM Template Suppression Incompatible) |
 
-### Non-Reasoning Architectural Boundary Rationale
-Models lacking internal reasoning token generation (`minicpm5`, `spark`, `lfm`) cannot participate in CoT toggle ablation ($\text{CoT} \in \{\text{On, Off}\}$) because their generation graph does not instantiate an intermediate reasoning channel. They serve as essential architectural benchmarks representing zero-scratchpad systems.
+### Rationale for Exclusion from the Factorial CoT_OFF Suppression Grid (Thesis §4.4.5)
+As formally documented in Thesis Chapter 4 (Table 4.4 and Section 4.4.5), MiniCPM-2B, Spark-4B, and LFM-2.6B utilize native `<think>` parsing in standard execution. However, they were excluded from the factorial $\text{CoT}_{\text{OFF}}$ suppression grid because their server-side vLLM chat templates do not cleanly support programmatic `--no-think` / `enable_thinking=False` suppression without inducing immediate tokenizer exceptions or severe tool syntax crashes (e.g., LFM's 70% invalid call rate). They serve as unmanipulated empirical reference baselines, while the 7 core reasoning models (plus Nanbeige control) execute the full $2 \times 4$ suppression matrix.
 
 ---
 
@@ -135,7 +135,7 @@ flowchart TD
 ### Detailed Stage Breakdown
 
 #### Stage 1: Cohort Selection & Benchmark Ingestion
-- Filters for the 8 models possessing native Chain-of-Thought reasoning capabilities (`qwen9b`, `gemma`, `ministral`, `ornith`, `gemma12b`, `qwen`, `nano`, `nanbeige`). Non-reasoning models (`minicpm5`, `spark`, `lfm`) serve as unmanipulated control baselines.
+- Filters for the 8 reasoning models supporting programmatic CoT suppression (`qwen9b`, `gemma`, `ministral`, `ornith`, `gemma12b`, `qwen`, `nano`, `nanbeige`). Models where vLLM server-side CoT suppression causes template incompatibility (`minicpm5`, `spark`, `lfm`) serve as unmanipulated empirical reference baselines (Thesis Section 4.4.5).
 - Sourced reference baselines are anchored to audited upstream benchmarks: `00_Baseline_Sweep` for Control, `EXP_2A_Boundary_Guardrail` for Epistemic Boundary, and `EXP_2BFIX_Untriggered_Default` for Authorize and Interdict.
 
 #### Stage 2: Factorial Matrix Assembly

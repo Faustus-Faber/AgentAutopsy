@@ -4,7 +4,7 @@
 **Evaluated Benchmark**: InjecAgent ($N=100\text{--}103$ test cases per cell across 8 reasoning models; $N=1{,}043\text{--}1{,}054$ matched full cohort for Nanbeige; $4{,}945$ executed trajectories on disk in [raw_results/](raw_results/): $3{,}891$ `thinkOFF` + $1{,}054$ `thinkON`)
 **Evaluated Models**:
 - **8 Native Reasoning Architectures**: Qwen3.5-9B, Gemma-4-E4B-it, Ministral-3-14B, Ornith-1.5-9B, Gemma-4-12B-it, Qwen3.5-4B, Nemotron-3-Nano-4B, Nanbeige-4.2-3B (FP16)
-- **3 Non-Reasoning Control Baselines**: MiniCPM5-2B, Spark-X2.5-4B, LFM-2.5-2.6B (unmanipulated baselines where CoT toggle is N/A)  
+- **3 Unmanipulated Reference Baselines**: MiniCPM5-2B, Spark-X2.5-4B, LFM-2.5-2.6B (utilize native `<think>` in baseline; excluded from factorial $\text{CoT}_{\text{OFF}}$ grid due to vLLM chat-template suppression incompatibility, Thesis §4.4.5)  
 **Intervention Design**: Factorial Test-Time Compute Manipulation:
 - **Thinking State**: `thinkON` (Deliberative CoT active) vs. `thinkOFF` (CoT suppressed via `--no-think` / template suppression)
 - **System Policy**: Control (Baseline), Boundary (EXP 2A Epistemic Boundary Defense), Authorize (Reframe), Interdict (Anomaly)  
@@ -104,9 +104,9 @@ All metrics below are audited directly from raw task outputs.
 | **Nemotron-3-Nano-4B**| Mamba2-Transformer Hybrid | Authorize (Reframe)| **47.69%** | **27.00%** (27/100) | **-20.69 pp** | **Compliance reaches 27.0% without CoT!** |
 | **Nemotron-3-Nano-4B**| Mamba2-Transformer Hybrid | Interdict (Anomaly)| **0.19%** | **1.00%** (1/100) | **+0.81 pp** | Interdiction intact without CoT |
 | **Nanbeige-4.2-3B** | Looped Transformer (22×2) | Control (Base) | **1.99%** | **4.99%** (52/1043)| **+3.00 pp** | Slight compliance rise without CoT (matched) |
-| *MiniCPM5-2B* | Standard Dense | All Conditions | — | — | — | *Non-reasoning baseline (CoT toggle N/A)* |
-| *Spark-X2.5-4B* | Standard Dense | All Conditions | — | — | — | *Non-reasoning baseline (CoT toggle N/A)* |
-| *LFM-2.5-2.6B* | Liquid SSM Hybrid | All Conditions | — | — | — | *Non-reasoning baseline (CoT toggle N/A)* |
+| *MiniCPM5-2B* | Standard Dense | All Conditions | — | — | — | *Native `<think>` in baseline; excluded from $\text{CoT}_{\text{OFF}}$ grid (Thesis §4.4.5)* |
+| *Spark-X2.5-4B* | Hybrid SWA (3:1) | All Conditions | — | — | — | *Native `<think>` in baseline; excluded from $\text{CoT}_{\text{OFF}}$ grid (Thesis §4.4.5)* |
+| *LFM-2.5-2.6B* | Liquid SSM Hybrid | All Conditions | — | — | — | *Native `<think>` in baseline; excluded from $\text{CoT}_{\text{OFF}}$ grid (Thesis §4.4.5)* |
 
 *Data Provenance & Sample Size Disclosures*:
 1. `thinkOFF` values represent empirical evaluations on disk in [raw_results/](raw_results/) ($N=100\text{--}103$ test cases per cell; for Nanbeige, $N=1{,}043$ cases).
